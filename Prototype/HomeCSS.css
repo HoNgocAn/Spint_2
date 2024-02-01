@@ -8,3 +8,64 @@ header {
 footer {
     margin-top: 30px;
 }
+.comprehensive-service{
+    margin-top: 30px;
+}
+.row-home{
+    margin: 30px;
+}
+h4{
+    padding: 15px;
+}
+.card-title{
+    text-align: center;
+}
+.col-card{
+
+}
+.media{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.card-img-top{
+    border-radius: 50%;
+    padding: 10px;
+}
+.icon-footer{
+    margin: 5px;
+}
+.text-doctor{
+    padding-left: 15px;
+}
+.row-doctor{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.a-doctor{
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+form {
+
+    box-sizing: border-box;
+
+    width: 900px;
+
+    height: 600px;
+
+    margin: 100px auto 0;
+
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+}
+.form-group{
+    margin: 10px;
+}
