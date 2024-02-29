@@ -1,0 +1,153 @@
+.text-header {
+    font-size: 20px;
+    padding-top: 7px;
+    text-decoration: none;
+}
+.header {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    background-color: deepskyblue;
+    padding: 10px;
+}
+.row-header{
+    margin-top: 10px;
+}
+.footer {
+    margin-top: 30px;
+}
+.comprehensive-service{
+    margin-top: 30px;
+}
+
+.row-home{
+    margin: 30px 100px ;
+}
+h4{
+    padding: 15px;
+}
+.card-title{
+    text-align: center;
+}
+.col-card{
+
+}
+.media{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.card-img-top{
+    border-radius: 50%;
+    padding: 10px;
+}
+.icon-footer{
+    margin: 7px;
+}
+.text-doctor{
+    padding-left: 15px;
+    font-family: "Trebuchet MS"
+
+}
+.row-doctor{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.link-doctor{
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+form {
+
+    box-sizing: border-box;
+
+    width: 750px;
+
+    height: 600px;
+
+    margin: 100px auto 0;
+
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+}
+.form-group{
+    margin: 10px;
+}
+.button-appoint{
+    text-align: center;
+}
+.input-header{
+    border-radius: 15px;
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    margin-left: 10px ;
+    padding: 5px;
+    background: white;
+}
+.find{
+    background: transparent;
+    border: none;
+    outline: none;
+}
+.item-specialty{
+    display: flex;
+    align-items: center;
+}
+.row-specialty{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.pagination{
+    justify-content: center;
+}
+.form-search{
+    height: 75px;
+    display: flex;
+    margin-bottom: 100px;
+}
+.err-name{
+    color: red;
+}
+.input-find{
+    margin-top: 30px;
+}
+.row-doctor-list{
+    margin: 30px;
+    padding: 30px;
+    border-bottom: 3px solid #ccc;
+}
+.row-specialty-list{
+    border-bottom: 3px solid #ccc;
+    margin: 30px;
+    padding: 30px;
+}
+.row-list-home{
+    margin: 30px;
+}
+
+.list-home{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.time-appointment{
+    width: 20%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    appearance: none; /* Ẩn giao diện mặc định của select */
+    text-align: center;
+    background-color: burlywood;
+    margin: 5px;
+}
+.time-doctor-right{
+    margin-top: 60px;
+}
+
+

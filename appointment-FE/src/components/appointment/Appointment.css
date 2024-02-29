@@ -1,0 +1,29 @@
+.radio-appointment{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+form{
+    margin-bottom: 100px;
+    border: 2px solid #ccc; /* đường viền */
+    border-radius: 10px; /* bo tròn các góc */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* hiệu ứng bóng đổ */
+    height: 100%;
+}
+.input-appointment{
+    border-radius: 15px;
+    display: flex;
+    width: 95%;
+    align-items: center;
+    margin-left: 10px ;
+    padding: 5px;
+    background: white;
+}
+.find{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+}

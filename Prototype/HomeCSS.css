@@ -1,9 +1,12 @@
 .test-header {
     font-size: 20px;
+    padding-top: 7px;
 }
 header {
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 30px;
+    background-color: deepskyblue;
+    padding: 10px;
 }
 footer {
     margin-top: 30px;
@@ -36,6 +39,8 @@ h4{
 }
 .text-doctor{
     padding-left: 15px;
+    font-family: "Trebuchet MS"
+
 }
 .row-doctor{
     margin-top: 20px;
@@ -52,7 +57,7 @@ form {
 
     box-sizing: border-box;
 
-    width: 900px;
+    width: 750px;
 
     height: 600px;
 
@@ -68,4 +73,7 @@ form {
 }
 .form-group{
     margin: 10px;
+}
+.button-appoint{
+    text-align: center;
 }
