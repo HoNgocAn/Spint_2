@@ -10,7 +10,7 @@ import {Link, NavLink, useNavigate} from "react-router-dom";
 
 function Specialty(){
 
-    const [nameSearch, setNameSearch] = useState([])
+    const [nameSearch, setNameSearch] = useState("")
 
     const [specialty, setSpecialty] = useState([]);
 
@@ -36,7 +36,6 @@ function Specialty(){
     const handlePageClick = (event) => {
         getAll(event.selected, nameSearch)
     }
-
 
     return (
         <>

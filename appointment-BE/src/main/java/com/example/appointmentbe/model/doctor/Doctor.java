@@ -1,12 +1,15 @@
 package com.example.appointmentbe.model.doctor;
 
 
+import com.example.appointmentbe.model.appointment.Appointment;
 import com.example.appointmentbe.model.auth.Account;
 import com.example.appointmentbe.model.specialty.Specialty;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,16 +37,22 @@ public class Doctor {
 
     private String avatar;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "doctor")
+    private Set<Appointment> appointments;
+
+
     @ManyToOne
     @JoinColumn(name = "id_specialty", referencedColumnName = "id")
     private Specialty specialty;
 
     @OneToOne
     @JsonBackReference
-    @JoinColumn(name = "id_account")
+    @JoinColumn(name = "id_account",  referencedColumnName = "id")
     private Account account;
 
     public Integer getId() {
+
         return id;
     }
 
@@ -115,6 +124,28 @@ public class Doctor {
         this.avatar = avatar;
     }
 
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
 
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public Specialty getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }
 

@@ -7,7 +7,9 @@ import * as authService from "../../service/auth/AuthService";
 import Header from "../Header";
 import Footer from "../Footer";
 import {useEffect} from "react";
-import logo from "../../img/login.png";
+import "./Login.css";
+import React from "react";
+import login from "../../img/login.png"
 
 
 export default function Login() {
@@ -16,7 +18,7 @@ export default function Login() {
 
     useEffect(() => {
         if (user) {
-            navigate(`/login`);
+            navigate("/dashboard");
         }
     }, []);
 
@@ -38,7 +40,7 @@ export default function Login() {
 
             if (res.status === 200) {
                 localStorage.setItem('user', JSON.stringify(res.data));
-                navigate("/")
+                navigate("/dashboard")
                 toast.success("Đăng nhập thành công !");
 
             }
@@ -56,23 +58,16 @@ export default function Login() {
 
                     <div className="col-8">
                         <div className="form-control shadow rounded-0 p-4">
-                            <div className="text-center mt-1">
-                                <h2>ĐĂNG NHẬP</h2>
-                            </div>
-                            <div className="row py-5 mt-2 align-items-center">
 
-                                {/*<div className="col-md-6 col-lg-6 pr-lg-5 mb-5 mb-md-0 mp"*/}
-                                {/*     style={{textAlign: `center`}}>*/}
-                                {/*    <img*/}
-                                {/*        src={logo} alt="img"*/}
-                                {/*        className="img-fluid mb-3 d-none d-md-block rounded-5"/>*/}
-                                {/*</div>*/}
+                            <div className="row py-5 mt-2 align-items-center">
 
                                 <div className="col-md-6 col-lg-6 ml-auto">
                                     <Formik initialValues={initValues}
                                             onSubmit={(values, {setFieldError}) => handleSubmitFormLogin(values, {setFieldError})}
                                             validationSchema={validateFormLogin}>
-                                        <Form>
+                                        <Form className="form-login">
+                                            <h2 style={{textAlign:"center"}}>ĐĂNG NHẬP</h2>
+                                            <img className="card-img" src={login} alt="Card image" height="180" width="100"/>
                                             <div className="row">
                                                 <div className="input-group col-lg-6 mb-4">
                                                     <label htmlFor="email"
@@ -102,11 +97,12 @@ export default function Login() {
                                                     </button>
                                                 </div>
                                                 <div className="d-flex me-5 justify-content-center gap-3 mt-3">
-
-                                                    <NavLink className="btn btn-primary btn-sm w-100" to={"/register-customer"} >
+                                                    <NavLink className="btn btn-primary btn-sm w-100" to="#" >
                                                         Đăng ký
                                                     </NavLink>
-
+                                                </div>
+                                                <div className="link-login">
+                                                    <Link to="#" style={{color:"black"}}>Quên mật khẩu</Link>
                                                 </div>
                                             </div>
                                         </Form>

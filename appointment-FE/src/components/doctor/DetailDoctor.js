@@ -2,18 +2,36 @@
 import Header from "../Header";
 import Footer from "../Footer";
 import "../Home.css";
-import {Link, useParams} from "react-router-dom";
+import {Link, NavLink, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import * as method from "../../service/doctor/DoctorService";
+import * as method1 from "../../service/dateExam/DateExamService";
+import { addDays,  format } from 'date-fns';
+import ModalBook from "../login/ModalBook";
+import authToken from "../../service/units/UserToken";
+
 
 function DetailDoctor(){
 
+
     const {id} = useParams();
+
+    const [idTime, setIdTime] = useState(1);
     const [doctor, setDoctor] = useState({});
 
+    const [date, setDate] = useState([])
+
+    const [dateDetail, setDateDetail] = useState({})
+
+
     useEffect(() => {
-        getAll()
+        getAll();
+        getAllDate(0);
     }, []);
+
+    useEffect(() => {
+        getDateById();
+    }, [idTime]);
 
     const getAll = async () => {
         try {
@@ -23,6 +41,38 @@ function DetailDoctor(){
             console.log("Error");
         }
     }
+
+    const getDateById = async () => {
+        try {
+            let data = await method1.getDateById(idTime);
+            setDateDetail(data)
+        }catch (e) {
+            console.log("Error");
+        }
+    }
+
+    const getAllDate = async (page) => {
+        try {
+            let data = await method1.getAllDate(page);
+            setDate(data.content);
+        }catch (e) {
+            console.log("Error");
+        }
+    }
+
+    let role;
+
+    if (!authToken()){
+        console.log("Error")
+    }else {
+        role = authToken().roles[0].authority;
+    }
+
+    const handleSelectChange = (event) => {
+        setIdTime( event.target.value);
+    };
+    console.log(dateDetail)
+
 
     return (
         <>
@@ -72,16 +122,19 @@ function DetailDoctor(){
                     </div>
                 </div>
                 <div className="row row-doctor">
-                    <div className="col-12 col-lg-6 time-doctor-left">
-                        <select className="form-select w-25" aria-label="Default select example">
-                            <option selected>Thứ 6- 2/2</option>
-                            <option value="1">Thứ 7- 3/2</option>
-                            <option value="2">CN - 4/2</option>
-                            <option value="3">Thứ 2- 5/2</option>
-                            <option value="3">Thứ 3- 6/2</option>
-                            <option value="3">Thứ 4- 7/2</option>
-                            <option value="3">Thứ 5- 8/2</option>
+
+                    <div className="col-12 col-lg-6 time-doctor-left" >
+
+                        <select className="form-select w-25" aria-label="Default select example"  onChange={handleSelectChange}>
+                            {date?  (
+                                date.map(item =>
+                            <option value= {item.id} key={item.id}>{item.date}</option>
+                                )
+                            ) : (
+                                <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>
+                            )}
                         </select>
+
                         <div style={{marginTop: "15px", marginLeft: "3px"}}>
                             <p>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -95,59 +148,149 @@ function DetailDoctor(){
                                 LỊCH KHÁM
                             </p>
                             <div className="row">
-
+                                {role == "CUSTOMER" || role == "ADMIN" ?
                                 <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to="/appointment" className="link-doctor">
-                                        08:00 - 08:30
+                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
+                                        {dateDetail.time1}
                                     </Link>
                                 </div>
-                                <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to="/appointment" className="link-doctor">
-                                        08:30 - 09:00
-                                    </Link>
-                                </div>
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        09:00 - 09:30
-                                    </Link>
-                                </div>
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        09:30 - 10:00
-                                    </Link>
-                                </div>
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        10:30 - 11:00
-                                    </Link>
-                                </div>
+                                    :
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                              data-bs-target="#book">
+                                            {dateDetail.time1}
+                                        </Link>
+                                    </div>}
 
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        13:30 - 14:00
-                                    </Link>
-                                </div>
+                                {role == "CUSTOMER" || role == "ADMIN" ?
                                 <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to="/appointment" className="link-doctor">
-                                        14:00 - 14:30
+                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor" >
+                                        {dateDetail.time2}
                                     </Link>
                                 </div>
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        14:30 - 15:00
+                                :
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                          data-bs-target="#book">
+                                        {dateDetail.time2}
                                     </Link>
-                                </div>
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        15:00 - 15:30
-                                    </Link>
-                                </div>
-                                <div className="col-12 col-lg-2 time-appointment">
-                                    <Link to="/appointment" className="link-doctor">
-                                        15:30 - 16:00
-                                    </Link>
-                                </div>
+                                </div>}
 
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
+                                        {dateDetail.time3}
+                                    </Link>
+                                </div>
+                                :
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                          data-bs-target="#book">
+                                        {dateDetail.time3}
+                                    </Link>
+                                </div>}
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
+                                        {dateDetail.time4}
+                                    </Link>
+                                </div>
+                                :
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                          data-bs-target="#book">
+                                        {dateDetail.time4}
+                                    </Link>
+                                </div>}
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to={`/appointment/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
+                                        {dateDetail.time5}
+                                    </Link>
+                                </div>
+                                :
+                                <div className="col-12 col-lg-2 time-appointment ">
+                                    <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                          data-bs-target="#book">
+                                        {dateDetail.time5}
+                                    </Link>
+                                </div>}
+
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
+                                            {dateDetail.time6}
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                              data-bs-target="#book">
+                                            {dateDetail.time6}
+                                        </Link>
+                                    </div>}
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to={`/appointment/${id}/${dateDetail.date}}/${dateDetail.time7}`} className="link-doctor">
+                                            {dateDetail.time7}
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                              data-bs-target="#book">
+                                            {dateDetail.time7}
+                                        </Link>
+                                    </div>}
+
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
+                                            {dateDetail.time8}
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                              data-bs-target="#book">
+                                            {dateDetail.time8}
+                                        </Link>
+                                    </div>}
+
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
+                                            {dateDetail.time9}
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                              data-bs-target="#book">
+                                            {dateDetail.time9}
+                                        </Link>
+                                    </div>}
+
+                                {role == "CUSTOMER" || role == "ADMIN" ?
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
+                                            {dateDetail.time10}
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        <Link to="#" className="link-doctor" data-bs-toggle="modal"
+                                              data-bs-target="#book">
+                                            {dateDetail.time10}
+                                        </Link>
+                                    </div>}
+                                <ModalBook/>
                             </div>
                             <p style={{fontSize:"20px", marginTop:"20px", marginLeft:"140px"}}>Chọn <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                                                                          className="bi bi-hand-index-thumb" viewBox="0 0 16 16">

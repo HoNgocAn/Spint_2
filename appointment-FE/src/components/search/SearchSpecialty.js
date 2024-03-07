@@ -12,19 +12,19 @@ import {Link, NavLink, useNavigate} from "react-router-dom";
 
 function SearchSpecialty(){
 
-    const [nameSearch, setNameSearch] = useState([])
+    const [error, setError] = useState("")
+
+    const [nameSearch, setNameSearch] = useState("")
 
     const [specialty, setSpecialty] = useState([]);
 
-
     const [totalPages, setTotalPages] = useState(0);
-
 
     useEffect(() => {
         getAll(0,nameSearch);
     }, []);
 
-    const getAll = async (page,nameSearch) => {
+    const getAll = async (page) => {
         try {
             let data = await method.getAllSpecialty(page,nameSearch);
             setSpecialty(data.content);
@@ -33,38 +33,38 @@ function SearchSpecialty(){
             console.log("Error");
         }
     }
-
+    //
     const handlePageClick = (event) => {
         getAll(event.selected, nameSearch)
     }
-
-
+    //
     const submitSearch = async () => {
         try {
             let res = await method.getAllSpecialty(0,nameSearch);
             setSpecialty(res.content);
             setTotalPages(Math.ceil(res.totalElements/res.size));
+            setError("");
         } catch (e){
-            console.log("/Error");
+            console.log("Error");
         }
     }
 
-    const handleNameSearch = async (value) =>{
-        setNameSearch(value);
-        submitSearch();
+    const dontContainsSpecialCharacters = (string) => {
+        const regex = /^[^!@#$%^&*()_+={}\[\]:;,<.>?\\\/'"`]*$/;
+
+        if (!regex.test(string)) {
+            setError("Không được chứa ký tự đặc biệt");
+        } else {
+            submitSearch().then()
+        }
+    };
+    const search = () => {
+        if (dontContainsSpecialCharacters(nameSearch)) {
+
+        } else {
+            console.log("Lỗi")
+        }
     }
-
-    const initValue = {
-        name: "",
-    }
-
-    const validateForm = {
-        name: yup.string().required("Không được để trống")
-
-    }
-
-
-    console.log(nameSearch)
     return (
         <>
             <Header/>
@@ -72,43 +72,26 @@ function SearchSpecialty(){
 
                 <h2>Các chuyên khoa của bệnh viện</h2>
                 <div className="input-find" >
-                    <div className="row m-2">
-                        <div className="col-auto">
-                            <input type="text" name="name" className="form-control"
-                                   onChange={(event => handleNameSearch(event.target.value))} id="name"
-                                   placeholder="Tìm kiếm theo tên "/>
-                        </div>
-                        <div className="col-auto">
-                            <button type="submit" className="btn btn-outline-secondary"
-                                    onClick={() => submitSearch()}>
-                                Tìm kiếm
+                    <form style={{width: "20%", alignContent: "center"}} className="input-group mb-3 mb-md-2 "
+                          role="search">
+                        <div className="input-search-doctor">
+                            <input type="search" className="form-control form-control-dark text-bg-light col-6"
+                                   placeholder="Tìm kiếm..." aria-label="Search" onChange={(event) => {setNameSearch("" + (event.target.value))
+
+                            }}/>
+                            <button type="submit" className="btn btn-light me-2"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        search();
+                                    }}>
+                                <i
+                                    className="fas fa-search"/>
                             </button>
                         </div>
-                    </div>
+                        {error ? <p style={{color:"red"}}>{error}</p> : <p></p>}
+                    </form>
                 </div>
 
-                {/*<Formik initialValues={initValue}*/}
-                {/*        onSubmit={(values)=>{*/}
-                {/*           handleNameSearch(values);*/}
-                {/*        }}*/}
-                {/*        validationSchema={yup.object(validateForm)} >*/}
-                {/*    <Form className="form-search">*/}
-                {/*        <div className="mb-3">*/}
-                {/*            <Field type="text" name="name" className="form-control" id="name"*/}
-                {/*                   placeholder="Tìm kiếm theo tên"*/}
-                {/*                />*/}
-                {/*            <ErrorMessage*/}
-                {/*                name="name"*/}
-                {/*                component="span"*/}
-                {/*                className="err-name"*/}
-                {/*            ></ErrorMessage>*/}
-                {/*        </div>*/}
-
-                {/*        <button type="submit" className="btn btn-primary"  >*/}
-                {/*            Tìm kiếm*/}
-                {/*        </button>*/}
-                {/*    </Form>*/}
-                {/*</Formik>*/}
 
                 {specialty ? (
                     specialty.map(item =>
@@ -127,7 +110,7 @@ function SearchSpecialty(){
                         </div>
                     )
                 ) : (
-                    <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>
+                    <h5 style={{color: "red",textAlign:"center", marginRight:"40px"}}>Không tìm thấy dữ liệu</h5>
                 )}
             </div>
             <div className="pagination">

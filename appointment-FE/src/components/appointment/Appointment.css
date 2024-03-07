@@ -5,12 +5,20 @@
     gap: 15px;
 }
 
-form{
-    margin-bottom: 100px;
+.form-appointment{
     border: 2px solid #ccc; /* đường viền */
     border-radius: 10px; /* bo tròn các góc */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* hiệu ứng bóng đổ */
     height: 100%;
+    box-sizing: border-box;
+
+    width: 750px;
+
+
+    margin: 100px auto 0 ;
+
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+
+    padding: 20px;
 }
 .input-appointment{
     border-radius: 15px;

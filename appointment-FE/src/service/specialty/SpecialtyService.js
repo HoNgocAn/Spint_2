@@ -12,7 +12,7 @@ export const getAllSpecialty = async (page, nameSearch) => {
 
 export const getSpecialtyById = async (id) => {
     try {
-        const rs = await axios.get(`http://localhost:8080/api/specialty/details/${id}`);
+        const rs = await axios.get(`http://localhost:8080/api/specialty/details/${id}` ,{headers:authHeader()});
         return rs.data;
     }catch (e){
         throw e.response;
@@ -21,7 +21,7 @@ export const getSpecialtyById = async (id) => {
 
 export const getAllSpecialtyHome = async (page, nameSearch) => {
     try {
-        let rs = await axios.get(`http://localhost:8080/api/specialty/list/home?page=${page}&nameSpecialty=${nameSearch}`)
+        let rs = await axios.get(`http://localhost:8080/api/specialty/list/home?page=${page}&nameSpecialty=${nameSearch}` ,{headers:authHeader()})
         return rs.data;
     }catch (e){
         return undefined

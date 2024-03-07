@@ -59,20 +59,6 @@ public class DoctorController {
         return new ResponseEntity<>(doctorPage, HttpStatus.OK);
     }
 
-//    @GetMapping("/list/specialty/{id}")
-//    public ResponseEntity<?> getAllDoctorBySpecialty(
-//            @RequestParam(defaultValue = "0", required = false) int page,
-//            @RequestParam(defaultValue = "5", required = false) int size,
-//            @PathVariable Integer id
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Doctor> doctorPage = iDoctorService.findAllDoctorBySpecialty(pageable, id);
-//        if (doctorPage.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(doctorPage, HttpStatus.OK);
-//    }
-
     @GetMapping("/details/{id}")
     public ResponseEntity<?> detailsDoctor(@PathVariable Integer id){
         Doctor doctor = iDoctorService.findDoctorById(id);

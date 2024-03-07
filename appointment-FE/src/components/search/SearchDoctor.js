@@ -7,21 +7,22 @@ import ReactPaginate from 'react-paginate';
 
 import {Link, NavLink, useNavigate} from "react-router-dom";
 
+
 function SearchDoctor(){
 
-    const [nameSearch, setNameSearch] = useState([])
+    const [error, setError] = useState("")
+
+    const [nameSearch, setNameSearch] = useState("")
 
     const [doctor, setDoctor] = useState([]);
 
-
     const [totalPages, setTotalPages] = useState(0);
-
 
     useEffect(() => {
         getAll(0,nameSearch);
     }, []);
 
-    const getAll = async (page,nameSearch) => {
+    const getAll = async (page) => {
         try {
             let data = await method.getAllDoctor(page,nameSearch);
             setDoctor(data.content);
@@ -30,26 +31,38 @@ function SearchDoctor(){
             console.log("Error");
         }
     }
-
+    //
     const handlePageClick = (event) => {
         getAll(event.selected, nameSearch)
     }
-
+    //
     const submitSearch = async () => {
         try {
             let res = await method.getAllDoctor(0,nameSearch);
             setDoctor(res.content);
             setTotalPages(Math.ceil(res.totalElements/res.size));
+            setError("");
         } catch (e){
-            console.log("/Error");
+            console.log("Error");
         }
     }
 
-    const handleNameSearch = async (value) =>{
-        setNameSearch(value);
-        submitSearch();
-    }
+    const dontContainsSpecialCharacters = (string) => {
+        const regex = /^[^!@#$%^&*()_+={}\[\]:;,<.>?\\\/'"`]*$/;
 
+        if (!regex.test(string)) {
+            setError("Không được chứa ký tự đặc biệt");
+        } else {
+            submitSearch().then()
+        }
+    };
+    const search = () => {
+        if (dontContainsSpecialCharacters(nameSearch)) {
+
+        } else {
+            console.log("Lỗi")
+        }
+    }
 
     return (
         <>
@@ -58,25 +71,32 @@ function SearchDoctor(){
 
                 <h2>Các bác sĩ của bệnh viện</h2>
 
+
                 <div className="input-find" >
-                    <div className="row m-2">
-                        <div className="col-auto">
-                            <input type="text" name="name" className="form-control"
-                                   onChange={(event => handleNameSearch(event.target.value))} id="name"
-                                   placeholder="Tìm kiếm theo tên "/>
-                        </div>
-                        <div className="col-auto">
-                            <button type="submit" className="btn btn-outline-secondary"
-                                    onClick={() => submitSearch()}>
-                                Tìm kiếm
+                    <form style={{width: "20%", alignContent: "center"}} className="input-group mb-3 mb-md-2 "
+                          role="search">
+                        <div className="input-search-doctor">
+                            <input type="search" className="form-control form-control-dark text-bg-light col-6"
+                                   placeholder="Tìm kiếm..." aria-label="Search" onChange={(event) => {setNameSearch("" + (event.target.value))
+
+                            }}/>
+                            <button type="submit" className="btn btn-light me-2"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        search();
+                                    }}>
+                                <i
+                                    className="fas fa-search"/>
                             </button>
                         </div>
-                    </div>
+                        {error ? <p style={{color:"red"}}>{error}</p> : <p></p>}
+                    </form>
+
                 </div>
                 {doctor ? (
                     doctor.map(item =>
 
-                        <div className="row row-doctor" key={item.id}>
+                        <div className="row row-doctor-list" key={item.id}>
                             <div className="col-12 col-lg-3">
                                 <img src={item.avatar} height="160" width="270"/>
                             </div>
@@ -91,7 +111,7 @@ function SearchDoctor(){
                         </div>
                     )
                 ) : (
-                    <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>
+                    <h5 style={{color: "red",textAlign:"center", marginRight:"40px"}}>Không tìm thấy dữ liệu</h5>
                 )}
             </div>
             <div className="pagination">

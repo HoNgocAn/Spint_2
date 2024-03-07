@@ -9,6 +9,14 @@
     background-color: deepskyblue;
     padding: 10px;
 }
+
+.header-account {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    background-color: seagreen;
+    padding: 10px;
+}
+
 .row-header{
     margin-top: 10px;
 }
@@ -58,24 +66,24 @@ h4{
     color: black;
 }
 
-form {
+/*form {*/
 
-    box-sizing: border-box;
+/*    box-sizing: border-box;*/
 
-    width: 750px;
+/*    width: 750px;*/
 
-    height: 600px;
+/*    height: 600px;*/
 
-    margin: 100px auto 0;
+/*    margin: 100px auto 0;*/
 
-    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+/*    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);*/
 
 
-    border-radius: 10px;
+/*    border-radius: 10px;*/
 
-    padding: 20px;
+/*    padding: 20px;*/
 
-}
+/*}*/
 .form-group{
     margin: 10px;
 }
@@ -101,9 +109,11 @@ form {
     align-items: center;
 }
 .row-specialty{
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin: 30px;
+    padding: 30px;
+    border-bottom: 2px solid #ccc;
 }
+
 .pagination{
     justify-content: center;
 }
@@ -117,6 +127,9 @@ form {
 }
 .input-find{
     margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .row-doctor-list{
     margin: 30px;
@@ -148,6 +161,63 @@ form {
 }
 .time-doctor-right{
     margin-top: 60px;
+}
+.input-search-doctor{
+    border-radius: 15px;
+    display: flex;
+    width: fit-content;
+    margin-left: 20px;
+    padding: 5px;
+    background: white;
+
+    justify-content: center; /* căn giữa theo chiều ngang */
+    align-items: center; /* căn giữa theo chiều dọc */
+
+}
+.table-appointment{
+    width: 75%;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.appointment-list{
+    background-image: linear-gradient(to left, wheat, lightyellow);
+    /*margin-top: 30px;*/
+    /*color: brown;*/
+    font-size: 30px;
+    border-collapse: collapse;
+    width: 100%;
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: left;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.appointment-list td  {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px; /* Cỡ chữ cho nội dung */
+}
+
+.appointment-list th  {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 20px; /* Cỡ chữ cho nội dung */
+}
+
+
+.appointment-details{
+    background-image: linear-gradient(to left, wheat, lightyellow);
+    border: #282c34;
+    border-radius: 50px;
 }
 
 

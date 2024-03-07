@@ -6,29 +6,30 @@ import React,{useEffect, useState} from "react";
 import * as method from "../../service/doctor/DoctorService";
 import * as methodS from "../../service/specialty/SpecialtyService";
 import {Link, useParams} from "react-router-dom";
+import Appointment from "../appointment/Appointment";
 
 
 function DetailSpecialty(){
 
+    const [nameSearch, setNameSearch] = useState("")
     const {id} = useParams();
     const [doctor, setDoctor] = useState([]);
     const [specialty, setSpecialty] = useState({});
 
     const [totalPages, setTotalPages] = useState(0);
-    console.log(id)
+
 
     useEffect(() => {
-        getAll(id, 0)
+        getAll(id, 0, nameSearch)
         getSpecialty()
     }, []);
 
 
-    const getAll = async (id,page) => {
+    const getAll = async (id,page, nameSearch) => {
         try {
-            let data = await method.getAllDoctorBySpecialty(id,page);
+            let data = await method.getAllDoctorBySpecialty(id,page, nameSearch);
             setDoctor(data.content);
             setTotalPages(data.totalPages)
-            console.log(data)
         }catch (e) {
             console.log("Error");
         }
@@ -38,17 +39,16 @@ function DetailSpecialty(){
         try {
             let data = await methodS.getSpecialtyById(id);
             setSpecialty(data);
-            console.log(data)
         }catch (e) {
             console.log("Error");
         }
     }
 
     const handlePageClick = (event) => {
-        getAll(event.selected)
+        getAll(id, event.selected, nameSearch)
     }
 
-
+    console.log(totalPages)
     return(
         <>
             <Header/>

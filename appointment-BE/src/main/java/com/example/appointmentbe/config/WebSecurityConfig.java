@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -62,11 +63,15 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/doctor/list").permitAll()
                                 .requestMatchers("/api/doctor/list/specialty/**").permitAll()
                                 .requestMatchers("/api/doctor/list/home").permitAll()
+                                .requestMatchers("/api/date/list").permitAll()
+                                .requestMatchers("/api/date/details/**").permitAll()
                                 .requestMatchers("/api/customer/register").permitAll()
                                 .requestMatchers("/api/specialty/details/**").permitAll()
                                 .requestMatchers("/api/doctor/details/**").permitAll()
+                                .requestMatchers("/api/appointment/create").permitAll()
 //                        Trang cần có quyền hợp lệ
-//                                .requestMatchers("/api/specialty/list").hasAnyAuthority("ADMIN")
+                                .requestMatchers("/api/appointment/list").hasAnyAuthority("ADMIN", "CUSTOMER", "DOCTOR")
+                                .requestMatchers("/api/appointment/details/**").permitAll()
 //                                .requestMatchers("/api/register").hasAnyAuthority("ROLE_ADMIN")
 //                                .requestMatchers("/api/customer/search/**").hasAnyAuthority("ROLE_USER")
 //                                .requestMatchers("/api/pay/**").hasAnyAuthority("ROLE_USER")
