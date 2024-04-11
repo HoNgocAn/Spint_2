@@ -4,7 +4,7 @@ import * as methodDoctor from "../../service/doctor/DoctorService";
 import Header from "../Header";
 import img_1 from "../../img/img_1.png";
 import img_2 from "../../img/img_2.png";
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import img_29 from "../../img/img_29.png";
 import img_30 from "../../img/img_30.png";
 import img_31 from "../../img/img_31.png";
@@ -29,6 +29,9 @@ import ModalLogout from "../login/ModalLogout";
 
 
 function HomeCustomer(){
+
+    const navigate = useNavigate();
+
     const [nameSearch, setNameSearch] = useState([])
 
     const [specialty, setSpecialty] = useState([]);
@@ -50,7 +53,7 @@ function HomeCustomer(){
             let data = await method.getAllSpecialtyHome(page,nameSearch);
             setSpecialty(data.content);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -60,14 +63,14 @@ function HomeCustomer(){
             let data = await methodDoctor.getAllDoctorHome(page,nameSearchDoctor);
             setDoctor(data.content);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
     let role;
 
     if (!authToken()){
-        console.log("Error")
+        console.log("error")
     }else {
         role = authToken().roles[0].authority;
     }
@@ -151,7 +154,7 @@ function HomeCustomer(){
                     }
                     <ModalLogout/>
                     <div className="col-12 col-lg-1">
-                        <Link to="/appointment" style={{textDecoration: 'none' }}>
+                        <Link to="/search-appointment/customer" style={{textDecoration: 'none' }}>
                             <p className="text-header" style={{color:"black",  textDecoration: 'none' }}>Lịch hẹn</p>
                         </Link>
                     </div>

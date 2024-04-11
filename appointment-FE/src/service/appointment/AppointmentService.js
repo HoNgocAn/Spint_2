@@ -20,6 +20,24 @@ export const getAppointmentById = async (id) => {
     }
 }
 
+export const getAllAppointmentByCustomer = async (id, page) => {
+    try {
+        const rs = await axios.get(`http://localhost:8080/api/appointment/list/customer/${id}?page=${page}`)
+        return rs.data;
+    }catch (e){
+        throw e.response;
+    }
+}
+
+export const getAllAppointmentByDoctor = async (id, page, dates) => {
+    try {
+        const rs = await axios.get(`http://localhost:8080/api/appointment/list/doctor/${id}?page=${page}&dates=${dates}`)
+        return rs.data;
+    }catch (e){
+        throw e.response;
+    }
+}
+
 export const createAppointment = async (appointment) => {
     try {
         await axios.post("http://localhost:8080/api/appointment/create", appointment);

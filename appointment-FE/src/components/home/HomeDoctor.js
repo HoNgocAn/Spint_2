@@ -1,15 +1,19 @@
 import Header from "../Header";
 import React from "react";
 import logo from "../../img/logo.png";
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import ModalLogout from "../login/ModalLogout";
 import authToken from "../../service/units/UserToken";
 
 function HomeDoctor(){
+
+
+
+
     let role;
 
     if (!authToken()){
-        console.log("Error")
+        console.log("error")
     }else {
         role = authToken().roles[0].authority;
     }

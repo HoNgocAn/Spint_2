@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @CrossOrigin("*")
 @RestController
@@ -59,6 +59,33 @@ public class AppointmentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(appointment,HttpStatus.OK);
+    }
+
+
+    @GetMapping("/list/customer/{id}")
+    public ResponseEntity<?> getAllAppointmentByCustomer(
+            @RequestParam(defaultValue = "0", required = false) int page, @PathVariable Integer id
+    ) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<IAppointmentDTO> appointmentDTOS = iAppointmentService.findAllAppointmentByCustomer(pageable, id);
+        if (appointmentDTOS.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(appointmentDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/list/doctor/{id}")
+    public ResponseEntity<?> getAllAppointmentByDoctor(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @PathVariable Integer id,
+            @RequestParam(name = "dates", defaultValue = "", required = false) String dates
+    ) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<IAppointmentDTO> appointmentDTOS = iAppointmentService.findAllAppointmentByDoctor(pageable, id, dates);
+        if (appointmentDTOS.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(appointmentDTOS, HttpStatus.OK);
     }
 
 }

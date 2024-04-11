@@ -9,8 +9,11 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as yup from "yup";
 
 import {Link, NavLink, useNavigate} from "react-router-dom";
+import Pagination from "../Pagination";
 
 function SearchSpecialty(){
+
+    const navigate = useNavigate();
 
     const [error, setError] = useState("")
 
@@ -30,7 +33,7 @@ function SearchSpecialty(){
             setSpecialty(data.content);
             setTotalPages(data.totalPages)
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
     //
@@ -45,7 +48,7 @@ function SearchSpecialty(){
             setTotalPages(Math.ceil(res.totalElements/res.size));
             setError("");
         } catch (e){
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -62,7 +65,7 @@ function SearchSpecialty(){
         if (dontContainsSpecialCharacters(nameSearch)) {
 
         } else {
-            console.log("Lỗi")
+            console.log("error")
         }
     }
     return (
@@ -116,24 +119,7 @@ function SearchSpecialty(){
             <div className="pagination">
                 {totalPages > 1 ? (
                     <div className="page">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Sau>"
-                            onPageChange={handlePageClick}
-                            pageCount={totalPages}
-                            previousLabel="<Trước"
-
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        <Pagination handlePageClick={handlePageClick} totalPages={totalPages} />
                     </div>
                 ) : (
                     <></>

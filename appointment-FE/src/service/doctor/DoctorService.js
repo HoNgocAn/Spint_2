@@ -18,6 +18,7 @@ export const getAllDoctorBySpecialty = async (id, page) => {
         throw e.response;
     }
 }
+
 export const getDoctorById = async (id) => {
     try {
         const rs = await axios.get(`http://localhost:8080/api/doctor/details/${id}` ,{headers:authHeader()});

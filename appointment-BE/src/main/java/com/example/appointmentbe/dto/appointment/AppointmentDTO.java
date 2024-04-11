@@ -40,6 +40,9 @@ public class AppointmentDTO implements Validator {
     @NotBlank(message = "Id bác sĩ không được để trống hoặc khoảng trắng")
     private Integer idDoctor;
 
+    @NotBlank(message = "Id khách hàng không được để trống hoặc khoảng trắng")
+    private Integer idCustomer;
+
     public Integer getId() {
         return id;
     }
@@ -110,6 +113,14 @@ public class AppointmentDTO implements Validator {
 
     public void setIdDoctor(Integer idDoctor) {
         this.idDoctor = idDoctor;
+    }
+
+    public Integer getIdCustomer() {
+        return idCustomer;
+    }
+
+    public void setIdCustomer(Integer idCustomer) {
+        this.idCustomer = idCustomer;
     }
 
     @Override

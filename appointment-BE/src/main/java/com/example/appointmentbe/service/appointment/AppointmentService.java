@@ -37,4 +37,14 @@ public class AppointmentService implements IAppointmentService{
     public IAppointmentDTO findAppointmentById(Integer id) {
         return iAppointmentRepository.findAppointmentById(id);
     }
+
+    @Override
+    public Page<IAppointmentDTO> findAllAppointmentByCustomer(Pageable pageable, Integer id) {
+        return iAppointmentRepository.findAllAppointmentByCustomer(pageable, id);
+    }
+
+    @Override
+    public Page<IAppointmentDTO> findAllAppointmentByDoctor(Pageable pageable, Integer id, String dates) {
+        return iAppointmentRepository.findAllAppointmentByDoctor(pageable, id, dates);
+    }
 }

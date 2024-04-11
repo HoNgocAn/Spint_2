@@ -3,13 +3,17 @@ import Footer from "../Footer";
 import React, {useEffect, useState} from "react";
 import * as method from "../../service/appointment/AppointmentService";
 import ReactPaginate from "react-paginate";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import "../Home.css"
 import { format } from 'date-fns';
+import Pagination from "../Pagination";
+import * as method2 from "../../service/customer/CustomerService";
 
 
 function AppointmentList(){
 
+
+    const navigate = useNavigate();
 
     const [nameSearch, setNameSearch] = useState([])
 
@@ -17,6 +21,7 @@ function AppointmentList(){
 
 
     const [totalPages, setTotalPages] = useState(0);
+
 
 
 
@@ -30,13 +35,16 @@ function AppointmentList(){
             setAppointment(data.content);
             setTotalPages(data.totalPages)
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
+
         }
     }
+
 
     const handlePageClick = (event) => {
         getAll(event.selected, nameSearch)
     }
+
 
 
     return (
@@ -91,24 +99,7 @@ function AppointmentList(){
             <div className="pagination">
                 {totalPages > 1 ? (
                     <div className="page">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Sau>"
-                            onPageChange={handlePageClick}
-                            pageCount={totalPages}
-                            previousLabel="<Trước"
-
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        <Pagination handlePageClick={handlePageClick} totalPages={totalPages} />
                     </div>
                 ) : (
                     <></>

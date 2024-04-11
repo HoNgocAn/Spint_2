@@ -14,8 +14,6 @@ function Header() {
         role = authToken().roles[0].authority;
     }
 
-    console.log(authToken())
-
 
     return (
         <div className="container-fluid header">
@@ -56,7 +54,10 @@ function Header() {
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><Link className="dropdown-item" to="/search-specialty">Tìm kiếm  chuyên khoa</Link></li>
                                 <li><Link className="dropdown-item" to="/search-doctor">Tìm kiếm bác sĩ</Link></li>
+                                {role =="ADMIN" ||  role == "DOCTOR"  ?
                                 <li><Link className="dropdown-item" to="/search-appointment">Tìm kiếm lịch hẹn</Link></li>
+                                    : <p></p>
+                                }
                             </ul>
                         </div>
                     </div>

@@ -7,8 +7,11 @@ import "../Home.css";
 import ReactPaginate from 'react-paginate';
 
 import {Link, NavLink, useNavigate} from "react-router-dom";
+import Pagination from "../Pagination";
 
 function Specialty(){
+
+    const navigate = useNavigate();
 
     const [nameSearch, setNameSearch] = useState("")
 
@@ -22,13 +25,13 @@ function Specialty(){
         getAll(0,nameSearch);
     }, []);
 
-    const getAll = async (page,nameSearch) => {
+    const getAll = async (page, nameSearch) => {
         try {
-            let data = await method.getAllSpecialty(page,nameSearch);
+            let data = await method.getAllSpecialty(page, nameSearch);
             setSpecialty(data.content);
             setTotalPages(data.totalPages)
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -66,24 +69,7 @@ function Specialty(){
             <div className="pagination">
             {totalPages > 1 ? (
                 <div className="page">
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel="Sau>"
-                        onPageChange={handlePageClick}
-                        pageCount={totalPages}
-                        previousLabel="<Trước"
-
-                        pageClassName="page-item"
-                        pageLinkClassName="page-link"
-                        previousClassName="page-item"
-                        previousLinkClassName="page-link"
-                        nextClassName="page-item"
-                        nextLinkClassName="page-link"
-                        breakClassName="page-item"
-                        breakLinkClassName="page-link"
-                        containerClassName="pagination"
-                        activeClassName="active"
-                    />
+                    <Pagination handlePageClick={handlePageClick} totalPages={totalPages} />
                 </div>
             ) : (
                 <></>

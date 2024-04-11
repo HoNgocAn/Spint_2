@@ -66,11 +66,16 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/date/list").permitAll()
                                 .requestMatchers("/api/date/details/**").permitAll()
                                 .requestMatchers("/api/customer/register").permitAll()
+                                .requestMatchers("/api/customer/details/**").permitAll()
                                 .requestMatchers("/api/specialty/details/**").permitAll()
                                 .requestMatchers("/api/doctor/details/**").permitAll()
                                 .requestMatchers("/api/appointment/create").permitAll()
+
 //                        Trang cần có quyền hợp lệ
-                                .requestMatchers("/api/appointment/list").hasAnyAuthority("ADMIN", "CUSTOMER", "DOCTOR")
+//                                .requestMatchers("/api/appointment/list").hasAnyAuthority("ADMIN", "CUSTOMER", "DOCTOR")
+                                .requestMatchers("/api/appointment/list").permitAll()
+                                .requestMatchers("/api/appointment/list/customer/**").permitAll()
+                                .requestMatchers("/api/appointment/list/doctor/**").permitAll()
                                 .requestMatchers("/api/appointment/details/**").permitAll()
 //                                .requestMatchers("/api/register").hasAnyAuthority("ROLE_ADMIN")
 //                                .requestMatchers("/api/customer/search/**").hasAnyAuthority("ROLE_USER")

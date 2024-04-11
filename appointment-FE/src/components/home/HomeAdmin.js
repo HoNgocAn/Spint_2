@@ -2,7 +2,7 @@
 import "../Home.css";
 import Header from "../Header";
 
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import React,{useEffect, useState} from "react";
 
 import 'bootstrap';
@@ -14,10 +14,12 @@ import ModalLogout from "../login/ModalLogout";
 
 function HomeAdmin(){
 
+
+
     let role;
 
     if (!authToken()){
-        console.log("Error")
+        console.log("error")
     }else {
         role = authToken().roles[0].authority;
     }

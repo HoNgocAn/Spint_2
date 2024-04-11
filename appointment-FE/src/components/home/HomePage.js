@@ -33,8 +33,11 @@ import img_31 from "../../img/img_31.png";
 import "../Home.css";
 import Header from "../Header";
 import Footer from "../Footer";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React,{useEffect, useState} from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import * as method from "../../service/specialty/SpecialtyService";
 import * as methodDoctor from "../../service/doctor/DoctorService";
 
@@ -42,6 +45,45 @@ import 'bootstrap';
 
 
 function HomePage(){
+
+    var settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        arrows: true,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
+
+    const navigate = useNavigate();
+
     const [nameSearch, setNameSearch] = useState([])
 
     const [specialty, setSpecialty] = useState([]);
@@ -63,9 +105,10 @@ function HomePage(){
             let data = await method.getAllSpecialtyHome(page,nameSearch);
             setSpecialty(data.content);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404");
         }
     }
+    console.log("hello")
 
 
     const getAllDoctor = async (page,nameSearchDoctor) => {
@@ -73,7 +116,7 @@ function HomePage(){
             let data = await methodDoctor.getAllDoctorHome(page,nameSearchDoctor);
             setDoctor(data.content);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404");
         }
     }
 
@@ -107,7 +150,7 @@ function HomePage(){
 
                 <div className="list-home">
                     <h3>Dành cho bạn</h3>
-                    <div className="row row-list-home">
+                    <div className="row row-list-home ">
                         <div className="col-12 col-lg-4 ">
                             <Link to="/doctor" style={{textDecoration:"none", color:"black"}}>
                                 <div className="card" style={{width:"350px", height: "330px"}}>
@@ -146,7 +189,7 @@ function HomePage(){
 
                 <div className="comprehensive-service">
                     <h3>Dịch vụ toàn diện</h3>
-                    <div className="row row-home">
+                    <div className="row row-home ">
                         <div className="col-12 col-lg-1">
                             <img src={img_3} width="50" height="50"/>
                         </div>
@@ -161,7 +204,7 @@ function HomePage(){
                         </div>
                     </div>
 
-                    <div className="row row-home">
+                    <div className="row row-home ">
                         <div className="col-12 col-lg-1">
                             <img src={img_5} width="50" height="50"/>
                         </div>
@@ -176,7 +219,7 @@ function HomePage(){
                         </div>
                     </div>
 
-                    <div className="row row-home">
+                    <div className="row row-home ">
                         <div className="col-12 col-lg-1">
                             <img src={img_7} width="50" height="50"/>
                         </div>
@@ -191,7 +234,7 @@ function HomePage(){
                         </div>
                     </div>
 
-                    <div className="row row-home">
+                    <div className="row row-home ">
                         <div className="col-12 col-lg-1">
                             <img src={img_9} width="50" height="50"/>
                         </div>
@@ -206,7 +249,7 @@ function HomePage(){
                         </div>
                     </div>
 
-                    <div className="row row-home">
+                    <div className="row row-home ">
                         <div className="col-12 col-lg-1">
                             <img src={img_11} width="50" height="50"/>
                         </div>
@@ -226,42 +269,23 @@ function HomePage(){
 
             <div className="specialist">
                 <h3>Chuyên khoa</h3>
-                <div id="carouselSpecialist" className="carousel slide">
-                    <div className="carousel-inner">
+                <div className="slider-container">
+                    <Slider {...settings}>
                         {specialty ? (
-                            specialty.reduce((accumulator, currentItem, index) => {
-                                if (index % 3 === 0) {
-                                    accumulator.push([]);
-                                }
-                                accumulator[accumulator.length - 1].push(
-                                    <div className="col-12 col-lg-4" key={currentItem.id}>
-                                        <div className="card" style={{ width: "380px", height: "350px" }}>
-                                            <img className="card-img-top" src={currentItem.img} alt="Card image" width="300" height="320" />
-                                            <div className="card-body">
-                                                <h4 className="card-title">{currentItem.name}</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                                return accumulator;
-                            }, []).map((carouselItem, index) => (
-                                <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
-                                    <div className="row row-home">{carouselItem}</div>
-                                </div>
-                            ))
+                        specialty.map(item =>
+                        <div className="row row-specialty-home" key={item.id}>
+                            <div>
+                                <img src={item.img} height="250" width="340"/>
+                            </div>
+                            <div>
+                                <h4>{item.name}</h4>
+                            </div>
+                        </div>
+                        )
                         ) : (
-                            <h5 style={{ color: "red" }}>Không tìm thấy dữ liệu</h5>
+                        <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>
                         )}
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselSpecialist" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselSpecialist" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
+                    </Slider>
                 </div>
             </div>
 
@@ -269,30 +293,22 @@ function HomePage(){
                 <h3 style={{paddingBottom: "25px"}}>Bác sĩ nổi bật</h3>
                 <div id="carouselDoctor" className="carousel slide">
                     <div className="carousel-inner">
-                        {doctor ? (
-                            doctor.reduce((accumulator, currentItem, index) => {
-                                if (index % 3 === 0) {
-                                    accumulator.push([]);
-                                }
-                                accumulator[accumulator.length - 1].push(
-                                    <div className="col-12 col-lg-4 img-doctor-home" key={currentItem.id}>
+                        <Slider {...settings}>
+                            {doctor ? (
+                                doctor.map(item =>
+                                    <div className="row row-specialty-home" key={item.id}>
                                         <div className="card" style={{ width: "350px", height: "360px" }}>
-                                            <img className="card-img-top" src={currentItem.avatar} alt="Card image" width="250" height="260" />
+                                            <img className="card-img-top" src={item.avatar} alt="Card image" width="250" height="260" />
                                             <div className="card-body">
-                                                <h4 className="card-title">{currentItem.name}</h4>
+                                                <h4 className="card-title">{item.name}</h4>
                                             </div>
                                         </div>
                                     </div>
-                                );
-                                return accumulator;
-                            }, []).map((carouselItem, index) => (
-                                <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}>
-                                    <div className="row row-home">{carouselItem}</div>
-                                </div>
-                            ))
-                        ) : (
-                            <h5 style={{ color: "red" }}>Không tìm thấy dữ liệu</h5>
-                        )}
+                                )
+                            ) : (
+                                <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>
+                            )}
+                        </Slider>
                     </div>
                     <button className="carousel-control-prev" type="button" data-bs-target="#carouselDoctor" data-bs-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>

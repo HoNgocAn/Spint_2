@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from "react";
 import * as method from "../../service/appointment/AppointmentService";
 import Header from "../Header";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Footer from "../Footer";
 import "../Home.css"
+import Pagination from "../Pagination";
+import * as method2 from "../../service/customer/CustomerService";
+import authToken from "../../service/units/UserToken";
 
 function SearchAppointment(){
+
+    const navigate = useNavigate();
 
     const [error, setError] = useState("")
 
@@ -16,9 +21,10 @@ function SearchAppointment(){
 
     const [totalPages, setTotalPages] = useState(0);
 
+
     useEffect(() => {
         getAll(0,nameSearch);
-    }, [appointment]);
+    }, [nameSearch]);
 
     const getAll = async (page) => {
         try {
@@ -26,13 +32,14 @@ function SearchAppointment(){
             setAppointment(data.content);
             setTotalPages(data.totalPages)
         }catch (e) {
-            console.log("Error");
+            console.log("error")
         }
     }
     //
     const handlePageClick = (event) => {
         getAll(event.selected, nameSearch)
     }
+
     //
     const submitSearch = async () => {
         try {
@@ -41,13 +48,12 @@ function SearchAppointment(){
             setTotalPages(Math.ceil(res.totalElements/res.size));
             setError("");
         } catch (e){
-            console.log("Error");
+            console.log("error")
         }
     }
 
     const dontContainsSpecialCharacters = (string) => {
         const regex = /^[^!@#$%^&*()_+={}\[\]:;,<.>?\\\/'"`]*$/;
-
         if (!regex.test(string)) {
             setError("Không được chứa ký tự đặc biệt");
         } else {
@@ -58,7 +64,7 @@ function SearchAppointment(){
         if (dontContainsSpecialCharacters(nameSearch)) {
 
         } else {
-            console.log("Lỗi")
+            console.log("error")
         }
     }
 
@@ -137,24 +143,7 @@ function SearchAppointment(){
             <div className="pagination">
                 {totalPages > 1 ? (
                     <div className="page">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Sau>"
-                            onPageChange={handlePageClick}
-                            pageCount={totalPages}
-                            previousLabel="<Trước"
-
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        <Pagination handlePageClick={handlePageClick} totalPages={totalPages} />
                     </div>
                 ) : (
                     <></>

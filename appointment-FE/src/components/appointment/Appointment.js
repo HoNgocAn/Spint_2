@@ -7,21 +7,28 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import * as method from "../../service/doctor/DoctorService";
 import * as method1 from "../../service/appointment/AppointmentService";
-import * as method2 from "../../service/dateExam/DateExamService";
+import * as method2 from "../../service/customer/CustomerService";
 import {Form, Field, Formik, ErrorMessage} from "formik";
 import * as yup from "yup"
 import {toast} from "react-toastify";
+
+import 'firebase/auth';
+import authToken from "../../service/units/UserToken";
 import { format } from 'date-fns';
+
 
 function Appointment(){
 
-    const {id, date, time} = useParams();
+    const {id, date, time } = useParams();
     const [doctor, setDoctor] = useState({});
     const navigate = useNavigate();
+    const [customer, setCustomer] = useState({});
 
+    const email = authToken().sub;
 
     useEffect(() => {
-        getAll()
+        getAll();
+        getCustomerByEmail();
     }, []);
 
 
@@ -30,27 +37,22 @@ function Appointment(){
             let data = await method.getDoctorById(id);
             setDoctor(data);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
+        }
+    }
 
+    const getCustomerByEmail = async () => {
+        try {
+            let data = await method2.getCustomerByEmail(email);
+            setCustomer(data)
+        }catch (e) {
+            navigate("/error404")
         }
     }
 
     const dd = new Date();
 
     const date120 = `${dd.getFullYear() - 120}-${dd.getMonth() + 1}-${dd.getDate()}`;
-
-    const [initValue, setInitValue] = useState({
-        nameCustomer: "",
-        date: date,
-        time: time,
-        phone: "",
-        birthday:"",
-        address:"",
-        reason: "",
-        idDoctor: id
-    });
-
-
 
     const validateForm = {
         nameCustomer: yup.string().required("Vui lòng nhập tên người khám")
@@ -69,16 +71,28 @@ function Appointment(){
         const isSuccess = method1.createAppointment(appointment);
         if (isSuccess) {
             toast.success("Thêm mới thành công")
-            navigate("/search-appointment")
+            navigate("/search-appointment/customer")
         } else {
             toast.error("Thêm mới thất bại")
         }
     }
-    
+
+
     return (
         <>
             <Header/>
-            <Formik initialValues={initValue}
+            {customer.id && (
+                <Formik initialValues={{
+                    nameCustomer: customer.name,
+                    date: format(date, 'dd/MM/yyyy'),
+                    time: time,
+                    phone: customer.phone,
+                    birthday:  format(customer.birthday, 'dd/MM/yyyy'),
+                    address: customer.address,
+                    reason: "",
+                    idDoctor: id,
+                    idCustomer: customer.id
+                }}
                     onSubmit={(values)=>{
                 createAppointment(values);
             }}
@@ -95,7 +109,7 @@ function Appointment(){
                     <div className="col-12 col-lg-9">
                         <h4>{doctor.name}</h4>
                         <p>{doctor.degree}</p>
-                        <p style={{fontSize:"25px"}}> Lịch hẹn : {time} , {date}   </p>
+                        <p style={{fontSize:"25px"}}> Lịch hẹn : {time} , {format(date, 'dd/MM/yyyy')}  </p>
                     </div>
                 </div>
                 <div className="form-group input-appointment">
@@ -118,7 +132,7 @@ function Appointment(){
                 ></ErrorMessage>
                 <div className="form-group input-appointment">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20"><path d="M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192z"/></svg>
-                    <Field type="date" name="birthday" className="form-control find" id="birthday"  placeholder="Ngày, tháng, năm sinh"/>
+                    <Field type="text" name="birthday" className="form-control find" id="birthday"  placeholder="Ngày, tháng, năm sinh"/>
                 </div>
                 <ErrorMessage
                     name="birthday"
@@ -148,6 +162,7 @@ function Appointment(){
                 </div>
             </Form>
             </Formik>
+            )}
             <Footer/>
         </>
     )

@@ -6,9 +6,12 @@ import "../Home.css";
 import ReactPaginate from 'react-paginate';
 
 import {Link, NavLink, useNavigate} from "react-router-dom";
+import Pagination from "../Pagination";
 
 
 function SearchDoctor(){
+
+    const navigate = useNavigate();
 
     const [error, setError] = useState("")
 
@@ -28,7 +31,7 @@ function SearchDoctor(){
             setDoctor(data.content);
             setTotalPages(data.totalPages)
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
     //
@@ -43,7 +46,7 @@ function SearchDoctor(){
             setTotalPages(Math.ceil(res.totalElements/res.size));
             setError("");
         } catch (e){
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -60,7 +63,7 @@ function SearchDoctor(){
         if (dontContainsSpecialCharacters(nameSearch)) {
 
         } else {
-            console.log("Lỗi")
+            console.log("error")
         }
     }
 
@@ -98,7 +101,7 @@ function SearchDoctor(){
 
                         <div className="row row-doctor-list" key={item.id}>
                             <div className="col-12 col-lg-3">
-                                <img src={item.avatar} height="160" width="270"/>
+                                <img src={item.avatar} height="300" width="270"/>
                             </div>
                             <div className="col-12 col-lg-7 item-specialty">
                                 <h4>{item.name}</h4>
@@ -117,24 +120,7 @@ function SearchDoctor(){
             <div className="pagination">
                 {totalPages > 1 ? (
                     <div className="page">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Sau>"
-                            onPageChange={handlePageClick}
-                            pageCount={totalPages}
-                            previousLabel="<Trước"
-
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        <Pagination handlePageClick={handlePageClick} totalPages={totalPages} />
                     </div>
                 ) : (
                     <></>

@@ -2,13 +2,14 @@
 import Header from "../Header";
 import Footer from "../Footer";
 import "../Home.css";
-import {Link, NavLink, useParams} from "react-router-dom";
+import {Link, NavLink, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import * as method from "../../service/doctor/DoctorService";
 import * as method1 from "../../service/dateExam/DateExamService";
 import { addDays,  format } from 'date-fns';
 import ModalBook from "../login/ModalBook";
 import authToken from "../../service/units/UserToken";
+import * as method2 from "../../service/appointment/AppointmentService";
 
 
 function DetailDoctor(){
@@ -16,10 +17,14 @@ function DetailDoctor(){
 
     const {id} = useParams();
 
+    const navigate = useNavigate();
+
     const [idTime, setIdTime] = useState(1);
     const [doctor, setDoctor] = useState({});
 
     const [date, setDate] = useState([])
+
+    const [dates, setDates] = useState([])
 
     const [dateDetail, setDateDetail] = useState({})
 
@@ -27,18 +32,35 @@ function DetailDoctor(){
     useEffect(() => {
         getAll();
         getAllDate(0);
-    }, []);
+    }, [id]);
 
     useEffect(() => {
-        getDateById();
+        if (idTime) {
+            getDateById();
+        }
     }, [idTime]);
+
+    useEffect(() => {
+        if (dateDetail.date) {
+            getAllAppointment(id, 0, dateDetail.date);
+        }
+    }, [dateDetail.date]);
 
     const getAll = async () => {
         try {
             let data = await method.getDoctorById(id);
             setDoctor(data);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
+        }
+    }
+
+    const getAllAppointment = async (id,page) => {
+        try {
+            const dates = await method2.getAllAppointmentByDoctor(id,page,  format(dateDetail.date, 'dd/MM/yyyy'))
+            setDates(dates.content);
+        }catch (e) {
+            console.log("error")
         }
     }
 
@@ -47,7 +69,7 @@ function DetailDoctor(){
             let data = await method1.getDateById(idTime);
             setDateDetail(data)
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -56,14 +78,14 @@ function DetailDoctor(){
             let data = await method1.getAllDate(page);
             setDate(data.content);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
     let role;
 
     if (!authToken()){
-        console.log("Error")
+        console.log("error")
     }else {
         role = authToken().roles[0].authority;
     }
@@ -71,7 +93,6 @@ function DetailDoctor(){
     const handleSelectChange = (event) => {
         setIdTime( event.target.value);
     };
-    console.log(dateDetail)
 
 
     return (
@@ -128,7 +149,7 @@ function DetailDoctor(){
                         <select className="form-select w-25" aria-label="Default select example"  onChange={handleSelectChange}>
                             {date?  (
                                 date.map(item =>
-                            <option value= {item.id} key={item.id}>{item.date}</option>
+                            <option value= {item.id} key={item.id} j> {format(item.date, 'dd/MM/yyyy')}</option>
                                 )
                             ) : (
                                 <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>
@@ -149,11 +170,23 @@ function DetailDoctor(){
                             </p>
                             <div className="row">
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
-                                        {dateDetail.time1}
-                                    </Link>
-                                </div>
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time1 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
+                                                            {dateDetail.time1}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
+                                                {dateDetail.time1}
+                                            </Link>
+                                        )}
+                                    </div>
                                     :
                                     <div className="col-12 col-lg-2 time-appointment ">
                                         <Link to="#" className="link-doctor" data-bs-toggle="modal"
@@ -163,11 +196,23 @@ function DetailDoctor(){
                                     </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor" >
-                                        {dateDetail.time2}
-                                    </Link>
-                                </div>
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time2 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor">
+                                                            {dateDetail.time2}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor">
+                                                {dateDetail.time2}
+                                            </Link>
+                                        )}
+                                    </div>
                                 :
                                 <div className="col-12 col-lg-2 time-appointment ">
                                     <Link to="#" className="link-doctor" data-bs-toggle="modal"
@@ -177,11 +222,23 @@ function DetailDoctor(){
                                 </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
-                                        {dateDetail.time3}
-                                    </Link>
-                                </div>
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time3 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
+                                                            {dateDetail.time3}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
+                                                {dateDetail.time3}
+                                            </Link>
+                                        )}
+                                    </div>
                                 :
                                 <div className="col-12 col-lg-2 time-appointment ">
                                     <Link to="#" className="link-doctor" data-bs-toggle="modal"
@@ -192,9 +249,21 @@ function DetailDoctor(){
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
                                 <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
-                                        {dateDetail.time4}
-                                    </Link>
+                                    {dates && dates.length > 0 ? (
+                                        dates.map(item => (
+                                            <div key={item.id}>
+                                                {item.time !== dateDetail.time4 ?
+                                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
+                                                        {dateDetail.time4}
+                                                    </Link>
+                                                    : <div>Đã đặt</div>}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
+                                            {dateDetail.time4}
+                                        </Link>
+                                    )}
                                 </div>
                                 :
                                 <div className="col-12 col-lg-2 time-appointment ">
@@ -205,11 +274,23 @@ function DetailDoctor(){
                                 </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                <div className="col-12 col-lg-2 time-appointment ">
-                                    <Link to={`/appointment/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
-                                        {dateDetail.time5}
-                                    </Link>
-                                </div>
+                                    <div className="col-12 col-lg-2 time-appointment ">
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time5 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
+                                                            {dateDetail.time5}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
+                                                {dateDetail.time5}
+                                            </Link>
+                                        )}
+                                    </div>
                                 :
                                 <div className="col-12 col-lg-2 time-appointment ">
                                     <Link to="#" className="link-doctor" data-bs-toggle="modal"
@@ -221,9 +302,21 @@ function DetailDoctor(){
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
                                     <div className="col-12 col-lg-2 time-appointment ">
-                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
-                                            {dateDetail.time6}
-                                        </Link>
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time6 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
+                                                            {dateDetail.time6}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
+                                                {dateDetail.time6}
+                                            </Link>
+                                        )}
                                     </div>
                                     :
                                     <div className="col-12 col-lg-2 time-appointment ">
@@ -235,9 +328,21 @@ function DetailDoctor(){
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
                                     <div className="col-12 col-lg-2 time-appointment ">
-                                        <Link to={`/appointment/${id}/${dateDetail.date}}/${dateDetail.time7}`} className="link-doctor">
-                                            {dateDetail.time7}
-                                        </Link>
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time7 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time7}`} className="link-doctor">
+                                                            {dateDetail.time7}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time7}`} className="link-doctor">
+                                                {dateDetail.time7}
+                                            </Link>
+                                        )}
                                     </div>
                                     :
                                     <div className="col-12 col-lg-2 time-appointment ">
@@ -250,9 +355,21 @@ function DetailDoctor(){
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
                                     <div className="col-12 col-lg-2 time-appointment ">
-                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
-                                            {dateDetail.time8}
-                                        </Link>
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time8 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
+                                                            {dateDetail.time8}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
+                                                {dateDetail.time8}
+                                            </Link>
+                                        )}
                                     </div>
                                     :
                                     <div className="col-12 col-lg-2 time-appointment ">
@@ -265,9 +382,21 @@ function DetailDoctor(){
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
                                     <div className="col-12 col-lg-2 time-appointment ">
-                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
-                                            {dateDetail.time9}
-                                        </Link>
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time9 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
+                                                            {dateDetail.time9}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
+                                                {dateDetail.time9}
+                                            </Link>
+                                        )}
                                     </div>
                                     :
                                     <div className="col-12 col-lg-2 time-appointment ">
@@ -279,9 +408,21 @@ function DetailDoctor(){
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
                                     <div className="col-12 col-lg-2 time-appointment ">
-                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
-                                            {dateDetail.time10}
-                                        </Link>
+                                        {dates && dates.length > 0 ? (
+                                            dates.map(item => (
+                                                <div key={item.id}>
+                                                    {item.time !== dateDetail.time10 ?
+                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
+                                                            {dateDetail.time10}
+                                                        </Link>
+                                                        : <div>Đã đặt</div>}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
+                                                {dateDetail.time10}
+                                            </Link>
+                                        )}
                                     </div>
                                     :
                                     <div className="col-12 col-lg-2 time-appointment ">
@@ -302,12 +443,11 @@ function DetailDoctor(){
                     </div>
                     <div className="col-12 col-lg-6 time-doctor-right">
                         <h6>ĐỊA CHỈ KHÁM</h6>
-                        <p>Phòng khám số 1 - Bệnh viện Bạch Mai, Hà Nội</p>
+                        <p>Bệnh viện Bạch Mai, Hà Nội</p>
                         <p>GIÁ KHÁM: 200.000 vnđ</p>
                         <p>LOẠI BẢO HIỂM ÁP DỤNG</p>
                     </div>
                 </div>
-
             </div>
              : (
             <h5 style={{color: "red"}}>Không tìm thấy dữ liệu</h5>

@@ -2,7 +2,7 @@ import Header from "../Header";
 import Footer from "../Footer";
 import {useEffect, useState} from "react";
 import * as method from "../../service/appointment/AppointmentService";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import React from "react";
 import "../Home.css"
 import { format } from 'date-fns';
@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 function DetailAppointment(){
 
     const {id} = useParams();
-
+    const navigate = useNavigate();
 
     const [appointment, setAppointment] = useState({});
 
@@ -25,7 +25,7 @@ function DetailAppointment(){
             let data = await method.getAppointmentById(id);
             setAppointment(data);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 

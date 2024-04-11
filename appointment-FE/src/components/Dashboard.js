@@ -3,6 +3,7 @@ import HomeAdmin from "./home/HomeAdmin";
 import HomeDoctor from "./home/HomeDoctor";
 import authToken from "../service/units/UserToken";
 import HomeCustomer from "./home/HomeCustomer";
+import React, {useEffect, useState} from "react";
 
 
 function Dashboard() {
@@ -16,7 +17,6 @@ function Dashboard() {
     }
 
 
-
     const renderDashboardContent = () => {
         if (!role) {
             return <HomePage/>;
@@ -28,6 +28,8 @@ function Dashboard() {
             return <HomeCustomer/>;
         }
     };
+
+
 
     return <>
         <div>

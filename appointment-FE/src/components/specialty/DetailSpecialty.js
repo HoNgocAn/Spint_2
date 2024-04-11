@@ -1,15 +1,17 @@
 import Header from "../Header";
 import Footer from "../Footer";
 import ReactPaginate from "react-paginate";
-
 import React,{useEffect, useState} from "react";
 import * as method from "../../service/doctor/DoctorService";
 import * as methodS from "../../service/specialty/SpecialtyService";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Appointment from "../appointment/Appointment";
+import Pagination from "../Pagination";
 
 
 function DetailSpecialty(){
+
+    const navigate = useNavigate();
 
     const [nameSearch, setNameSearch] = useState("")
     const {id} = useParams();
@@ -31,7 +33,7 @@ function DetailSpecialty(){
             setDoctor(data.content);
             setTotalPages(data.totalPages)
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -40,7 +42,7 @@ function DetailSpecialty(){
             let data = await methodS.getSpecialtyById(id);
             setSpecialty(data);
         }catch (e) {
-            console.log("Error");
+            navigate("/error404")
         }
     }
 
@@ -48,7 +50,6 @@ function DetailSpecialty(){
         getAll(id, event.selected, nameSearch)
     }
 
-    console.log(totalPages)
     return(
         <>
             <Header/>
@@ -60,7 +61,7 @@ function DetailSpecialty(){
 
                         <div className="row row-doctor-list" key={item.id}>
                             <div className="col-12 col-lg-3">
-                                <img src={item.avatar} height="160" width="270"/>
+                                <img src={item.avatar} height="300" width="270"/>
                             </div>
                             <div className="col-12 col-lg-7 item-specialty">
                                 <h4>{item.name}</h4>
@@ -79,24 +80,7 @@ function DetailSpecialty(){
             <div className="pagination">
                 {totalPages > 1 ? (
                     <div className="page">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Sau>"
-                            onPageChange={handlePageClick}
-                            pageCount={totalPages}
-                            previousLabel="<Trước"
-
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            containerClassName="pagination"
-                            activeClassName="active"
-                        />
+                        <Pagination handlePageClick={handlePageClick} totalPages={totalPages} />
                     </div>
                 ) : (
                     <></>

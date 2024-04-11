@@ -4,7 +4,6 @@ import com.example.appointmentbe.dto.appointment.AppointmentDTO;
 import com.example.appointmentbe.dto.appointment.IAppointmentDTO;
 import com.example.appointmentbe.model.appointment.Appointment;
 
-import com.example.appointmentbe.model.doctor.Doctor;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +19,17 @@ public interface IAppointmentRepository  extends JpaRepository<Appointment, Inte
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO appointment(name_customer,date,time, phone, birthday, address, reason,id_doctor)" +
+    @Query(value = "INSERT INTO appointment(name_customer,date,time, phone, birthday, address, reason,id_doctor,id_customer)" +
             " VALUES (:#{#appointmentDTO.nameCustomer}, :#{#appointmentDTO.date}, :#{#appointmentDTO.time} ,:#{#appointmentDTO.phone}, :#{#appointmentDTO.birthday}, :#{#appointmentDTO.address}," +
-            " :#{#appointmentDTO.reason},:#{#appointmentDTO.idDoctor})", nativeQuery = true)
+            " :#{#appointmentDTO.reason},:#{#appointmentDTO.idDoctor},:#{#appointmentDTO.idCustomer})", nativeQuery = true)
     void createAppointment(@Param("appointmentDTO") AppointmentDTO appointmentDTO);
 
     @Query(value = "select a.*, d.name as nameDoctor from appointment a join doctor d on a.id_doctor = d.id where a.id=:id", nativeQuery = true)
     IAppointmentDTO findAppointmentById(@Param("id") Integer id);
+
+    @Query(value = "select a.*, d.name as nameDoctor from appointment a join doctor d on a.id_doctor = d.id where a.id_customer=:id", nativeQuery = true)
+    Page<IAppointmentDTO> findAllAppointmentByCustomer(Pageable pageable,@Param("id") Integer id);
+
+    @Query(value = "select a.*, d.name as nameDoctor from appointment a join doctor d on a.id_doctor = d.id where a.id_doctor=:id and a.date like :dates", nativeQuery = true)
+    Page<IAppointmentDTO> findAllAppointmentByDoctor(Pageable pageable,@Param("id") Integer id, @Param("dates") String dates);
 }
