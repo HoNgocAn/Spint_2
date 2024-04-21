@@ -170,18 +170,32 @@ function DetailDoctor(){
                             </p>
                             <div className="row">
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time1 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
-                                                            {dateDetail.time1}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time1);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time1}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time1}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
+                                                                {dateDetail.time1}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time1}`} className="link-doctor">
                                                 {dateDetail.time1}
                                             </Link>
@@ -196,18 +210,32 @@ function DetailDoctor(){
                                     </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time2 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor">
-                                                            {dateDetail.time2}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time2);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time2}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time2}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor">
+                                                                {dateDetail.time2}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time2}`} className="link-doctor">
                                                 {dateDetail.time2}
                                             </Link>
@@ -222,18 +250,32 @@ function DetailDoctor(){
                                 </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time3 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
-                                                            {dateDetail.time3}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time3);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time3}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time3}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
+                                                                {dateDetail.time3}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time3}`} className="link-doctor">
                                                 {dateDetail.time3}
                                             </Link>
@@ -248,23 +290,37 @@ function DetailDoctor(){
                                 </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                <div className="col-12 col-lg-2 time-appointment ">
-                                    {dates && dates.length > 0 ? (
-                                        dates.map(item => (
-                                            <div key={item.id}>
-                                                {item.time !== dateDetail.time4 ?
-                                                    <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
-                                                        {dateDetail.time4}
-                                                    </Link>
-                                                    : <div>Đã đặt</div>}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
-                                            {dateDetail.time4}
-                                        </Link>
-                                    )}
-                                </div>
+                                    <div className="col-12 col-lg-2 time-appointment">
+                                        {dates && dates.length > 0 ? (
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time4);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time4}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time4}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
+                                                                {dateDetail.time4}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
+                                        ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
+                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time4}`} className="link-doctor">
+                                                {dateDetail.time4}
+                                            </Link>
+                                        )}
+                                    </div>
                                 :
                                 <div className="col-12 col-lg-2 time-appointment ">
                                     <Link to="#" className="link-doctor" data-bs-toggle="modal"
@@ -274,18 +330,32 @@ function DetailDoctor(){
                                 </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time5 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
-                                                            {dateDetail.time5}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time5);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time5}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time5}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
+                                                                {dateDetail.time5}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time5}`} className="link-doctor">
                                                 {dateDetail.time5}
                                             </Link>
@@ -301,18 +371,32 @@ function DetailDoctor(){
 
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time6 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
-                                                            {dateDetail.time6}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time6);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time6}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time6}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
+                                                                {dateDetail.time6}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time6}`} className="link-doctor">
                                                 {dateDetail.time6}
                                             </Link>
@@ -327,18 +411,32 @@ function DetailDoctor(){
                                     </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time7 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time7}`} className="link-doctor">
-                                                            {dateDetail.time7}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time7);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time7}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time7}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time7}`} className="link-doctor">
+                                                                {dateDetail.time7}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time7}`} className="link-doctor">
                                                 {dateDetail.time7}
                                             </Link>
@@ -354,18 +452,32 @@ function DetailDoctor(){
 
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time8 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
-                                                            {dateDetail.time8}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time8);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time8}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time8}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
+                                                                {dateDetail.time8}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time8}`} className="link-doctor">
                                                 {dateDetail.time8}
                                             </Link>
@@ -381,18 +493,32 @@ function DetailDoctor(){
 
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time9 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
-                                                            {dateDetail.time9}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time9);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time9}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time9}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
+                                                                {dateDetail.time9}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time9}`} className="link-doctor">
                                                 {dateDetail.time9}
                                             </Link>
@@ -407,18 +533,32 @@ function DetailDoctor(){
                                     </div>}
 
                                 {role == "CUSTOMER" || role == "ADMIN" ?
-                                    <div className="col-12 col-lg-2 time-appointment ">
+                                    <div className="col-12 col-lg-2 time-appointment">
                                         {dates && dates.length > 0 ? (
-                                            dates.map(item => (
-                                                <div key={item.id}>
-                                                    {item.time !== dateDetail.time10 ?
-                                                        <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
-                                                            {dateDetail.time10}
-                                                        </Link>
-                                                        : <div>Đã đặt</div>}
-                                                </div>
-                                            ))
+                                            (() => {
+                                                // Kiểm tra xem thời gian đã được đặt hay chưa
+                                                const isTimeBooked = dates.some(item => item.time === dateDetail.time10);
+
+                                                // Nếu thời gian đã được đặt, hiển thị văn bản "Đã đặt"
+                                                if (isTimeBooked) {
+                                                    return (
+                                                        <div key={dateDetail.time10}>
+                                                            <div>Đã đặt</div>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    // Nếu thời gian chưa được đặt, hiển thị liên kết để đặt lịch
+                                                    return (
+                                                        <div key={dateDetail.time10}>
+                                                            <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
+                                                                {dateDetail.time10}
+                                                            </Link>
+                                                        </div>
+                                                    );
+                                                }
+                                            })()
                                         ) : (
+                                            // Nếu không có dữ liệu, hiển thị liên kết để đặt lịch
                                             <Link to={`/appointment/${id}/${dateDetail.date}/${dateDetail.time10}`} className="link-doctor">
                                                 {dateDetail.time10}
                                             </Link>
